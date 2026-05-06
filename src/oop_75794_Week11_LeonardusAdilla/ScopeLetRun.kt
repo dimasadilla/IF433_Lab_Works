@@ -10,4 +10,11 @@ fun main () {
         it.length // Mengembalikan nilai expression terakhir
     }
     println("Panjang nama: $length")
+
+    val result: Int = "Kotlin".run {
+        println("Memproses kata: ${this}")
+        length * 2
+    }
+
+    println("Hasil kalkulasi run: $result")
 }
