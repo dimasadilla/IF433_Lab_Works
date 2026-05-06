@@ -13,7 +13,7 @@ fun main () {
 
     val result: Int = "Kotlin".run {
         println("Memproses kata: ${this}")
-        length * 2
+        this.length * 2
     }
 
     println("Hasil kalkulasi run: $result")
