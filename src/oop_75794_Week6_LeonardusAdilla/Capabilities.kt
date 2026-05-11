@@ -1,9 +1,9 @@
 package oop_75794_Week6_LeonardusAdilla
-
-interface BluetootConnetable {
+// Interface = Can-Do (Behavior)
+interface BluetoothConnectable {
     fun connetToBluetooth()
 }
 
 interface Rechargeable {
-    fun chargeBattery()
+    fun chargerBattery()
 }
