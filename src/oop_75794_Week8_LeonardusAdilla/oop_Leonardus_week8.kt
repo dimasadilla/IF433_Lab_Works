@@ -1,4 +1,4 @@
-package oop_week8_LeonardusAdilla
+package oop_75794_Week8_LeonardusAdilla
 class set_krs(val nim:String, val tahun:Int?) {
     fun pilih_matkul(kodeMatkul: String?) {
         println("Matkul dipilih $kodeMatkul");

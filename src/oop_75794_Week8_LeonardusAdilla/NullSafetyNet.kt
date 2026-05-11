@@ -1,4 +1,4 @@
-package oop_week8_LeonardusAdilla
+package oop_75794_Week8_LeonardusAdilla
 
 fun main() {
     var nama:String? = "Wirawan";

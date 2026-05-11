@@ -1,4 +1,4 @@
-package oop_week9_LeonardusAdilla
+package oop_75794_Week9_LeonardusAdilla
 
 data class Student(val name:String, val gpa: Double)
 

@@ -1,4 +1,4 @@
-package oop_week9_LeonardusAdilla
+package oop_75794_Week9_LeonardusAdilla
 
 fun main () {
     val numbers = listOf(1, 2, 3, 4, 5, 6, 7, 8)

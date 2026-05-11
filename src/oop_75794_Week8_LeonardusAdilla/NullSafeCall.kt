@@ -1,4 +1,4 @@
-package oop_week8_LeonardusAdilla
+package oop_75794_Week8_LeonardusAdilla
 
 class Alamat( val nomor:String, val kota:String)
 class Mahasiswa(val  nama:String, val addr: Alamat?)

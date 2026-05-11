@@ -1,4 +1,4 @@
-package oop_75794_week10_Leonardusadilla
+package oop_75794_Week10_Leonardusadilla
 
 data class Coin(val name: String, val balance: Double)
 
