@@ -57,4 +57,15 @@ fun main() {
         println("Siklus pengecekan dispenser pagi selesai.")
 
     }
+
+    // Jadwal makan sore dengan runCatching
+    runCatching {
+
+        dispenseKibble(
+            requestedGram = 30,
+            availableGram = 1000,
+            isJammed = false
+        )
+
+    }
 }
