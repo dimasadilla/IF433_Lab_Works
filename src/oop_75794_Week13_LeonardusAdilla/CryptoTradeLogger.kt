@@ -15,7 +15,9 @@ fun TradeRecord.toCsv(): String {
 }
 
 fun fromCsvTrade(line: String): TradeRecord? {
+
     return try {
+
         val data = line.split(",")
 
         TradeRecord(
@@ -27,22 +29,24 @@ fun fromCsvTrade(line: String): TradeRecord? {
         )
 
     } catch (e: Exception) {
+
         println("(Log) Data korup diabaikan: $line")
         null
     }
 }
 
 fun saveTrades(trades: List<TradeRecord>, path: String) {
+
     File(path).printWriter().use { writer ->
 
         trades.forEach { trade ->
             writer.println(trade.toCsv())
         }
-
     }
 }
 
 fun loadTrades(path: String): List<TradeRecord> {
+
     return try {
 
         File(path)
@@ -53,7 +57,6 @@ fun loadTrades(path: String): List<TradeRecord> {
 
         println("(Log) File tidak ditemukan: $path")
         emptyList()
-
     }
 }
 
@@ -95,5 +98,18 @@ fun main() {
 
     val totalPnl = loadedData.sumOf { it.pnl }
 
-    println("Total Net PnL: $totalPnl")
+    println("===== DATA TRANSAKSI VALID =====")
+
+    loadedData.forEach { trade ->
+
+        println(
+            "ID: ${trade.id}, " +
+                    "Symbol: ${trade.symbol}, " +
+                    "Type: ${trade.type}, " +
+                    "Margin: ${trade.margin}, " +
+                    "PnL: ${trade.pnl}"
+        )
+    }
+
+    println("==== TOTAL PnL BERSIH: $totalPnl ====")
 }
