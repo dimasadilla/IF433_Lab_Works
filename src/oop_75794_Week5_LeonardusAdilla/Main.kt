@@ -69,6 +69,19 @@ fun main() {
 
         payment.processPayment(75000.0)
 
+        // Smart Casting Challenge
+        if (payment is EWallet) {
+
+            println("Top up otomatis untuk E-Wallet...")
+
+            payment.topUp(50000.0)
+
+            println("Mencoba pembayaran ulang...")
+
+            payment.processPayment(75000.0)
+        }
+
         println("----------------------------")
     }
+
 }
