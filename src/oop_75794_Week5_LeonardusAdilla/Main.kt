@@ -43,4 +43,32 @@ fun main() {
 
     val luasLingkaran = mathHelper.hitungLuas(7.0)
     println("Luas Lingkaran = $luasLingkaran")
+
+    // ==================================
+    // Abstraction - Sistem Pembayaran
+    // ==================================
+
+    val eWallet = EWallet(
+        accountName = "Leon Wallet",
+        balance = 50000.0
+    )
+
+    val creditCard = CreditCard(
+        accountName = "Leon Credit Card",
+        limit = 100000.0
+    )
+
+    val daftarPembayaran: List<PaymentMethod> =
+        listOf(eWallet, creditCard)
+
+    println("\n=== SISTEM PEMBAYARAN ===")
+
+    for (payment in daftarPembayaran) {
+
+        println("Metode Pembayaran: ${payment.accountName}")
+
+        payment.processPayment(75000.0)
+
+        println("----------------------------")
+    }
 }
