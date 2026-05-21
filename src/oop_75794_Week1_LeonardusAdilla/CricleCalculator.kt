@@ -1,6 +1,5 @@
 package oop_75794_Week1_LeonardusAdilla
 
-
 fun main(args: Array<String>) {
 
     // Variable definition
@@ -13,15 +12,14 @@ fun main(args: Array<String>) {
     // String Template
     println("Radius: $radius, Area: $area")
 
-    // Logic check
-    checkSize(area)
+    // Print hasil function
+    println(checkSize(area))
 }
 
-fun checkSize(area: Double) {
-
+// Expression Body Function
+fun checkSize(area: Double) =
     if (area > 100) {
-        println("This is a Big Circle")
+        "This is a Big Circle"
     } else {
-        println("This is a Small Circle")
+        "This is a Small Circle"
     }
-}
