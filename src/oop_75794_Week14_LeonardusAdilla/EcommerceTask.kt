@@ -2,18 +2,58 @@ package oop_75794_Week14_LeonardusAdilla
 import java.io.File
 
 
+
 // =======================
 // DATA CLASS
 // =======================
 data class Order(
     val itemName: String,
     val finalPrice: Double,
-    val customerType: String
+    val pricingType: String
 )
 
 
 // =======================
-// REPOSITORY (DIP)
+// PRICING STRATEGY (OCP)
+// =======================
+interface PricingStrategy {
+    fun calculate(price: Double): Double
+    fun getType(): String
+}
+
+
+// =======================
+// REGULAR PRICING
+// =======================
+class RegularPricing : PricingStrategy {
+
+    override fun calculate(price: Double): Double {
+        return price
+    }
+
+    override fun getType(): String {
+        return "REGULAR"
+    }
+}
+
+
+// =======================
+// VIP PRICING
+// =======================
+class VipPricing : PricingStrategy {
+
+    override fun calculate(price: Double): Double {
+        return price * 0.90
+    }
+
+    override fun getType(): String {
+        return "VIP"
+    }
+}
+
+
+// =======================
+// ORDER REPOSITORY (DIP)
 // =======================
 interface OrderRepository {
     fun saveOrder(order: Order)
@@ -21,7 +61,7 @@ interface OrderRepository {
 
 
 // =======================
-// IMPLEMENTASI CSV REPOSITORY
+// CSV ORDER REPOSITORY
 // =======================
 class CsvOrderRepository(
     private val fileName: String = "Orders.csv"
@@ -29,14 +69,15 @@ class CsvOrderRepository(
 
     override fun saveOrder(order: Order) {
 
-        File(fileName).appendText(
-            "${order.itemName},${order.finalPrice},${order.customerType}\n"
-        )
+        val file = File(fileName)
 
         // Safe Resource Handling menggunakan use
-        File(fileName).bufferedWriter().use { writer ->
+        file.outputStream().bufferedWriter().use { writer ->
+
             writer.append(
-                "${order.itemName},${order.finalPrice},${order.customerType}\n"
+                "${order.itemName}," +
+                        "${order.finalPrice}," +
+                        "${order.pricingType}\n"
             )
         }
     }
@@ -44,7 +85,7 @@ class CsvOrderRepository(
 
 
 // =======================
-// NOTIFICATION SERVICE (DIP)
+// NOTIFICATION SERVICE
 // =======================
 interface NotificationService {
     fun sendNotification(message: String)
@@ -52,7 +93,7 @@ interface NotificationService {
 
 
 // =======================
-// IMPLEMENTASI EMAIL NOTIFIER
+// EMAIL NOTIFIER
 // =======================
 class EmailNotifier : NotificationService {
 
@@ -73,25 +114,24 @@ class SafeOrderProcessor(
     fun processOrder(
         itemName: String,
         basePrice: Double,
-        customerType: String
+        pricingStrategy: PricingStrategy
     ) {
 
-        // Masih sederhana dulu
-        val finalPrice = when (customerType) {
-            "REGULAR" -> basePrice
-            "VIP" -> basePrice * 0.90
-            else -> basePrice
-        }
+        // Menggunakan strategy
+        val finalPrice = pricingStrategy.calculate(basePrice)
 
-        println("Memproses pesanan $itemName seharga $finalPrice")
+        println(
+            "Memproses pesanan $itemName " +
+                    "seharga Rp$finalPrice"
+        )
 
-        // Simpan order
         val order = Order(
             itemName = itemName,
             finalPrice = finalPrice,
-            customerType = customerType
+            pricingType = pricingStrategy.getType()
         )
 
+        // Simpan ke repository
         repo.saveOrder(order)
 
         // Kirim notifikasi
@@ -115,9 +155,19 @@ fun main() {
         notifier = notifier
     )
 
+    // REGULAR
+    processor.processOrder(
+        itemName = "Keyboard Mechanical",
+        basePrice = 500000.0,
+        pricingStrategy = RegularPricing()
+    )
+
+    println()
+
+    // VIP
     processor.processOrder(
         itemName = "Laptop Gaming",
         basePrice = 15000000.0,
-        customerType = "VIP"
+        pricingStrategy = VipPricing()
     )
 }
