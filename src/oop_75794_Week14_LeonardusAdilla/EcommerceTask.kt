@@ -1,25 +1,123 @@
 package oop_75794_Week14_LeonardusAdilla
 import java.io.File
 
-class BadOrderProcessor {
-    //VIOLATION Hardcoded File I/O (DIP), Melakukan kalkulasi + I/O + Notifikasi sekali
-    private val file = File("Orders.csv")
 
-    fun proccessOrder(itemName: String, basePrice: Double, customerType: String) {
+// =======================
+// DATA CLASS
+// =======================
+data class Order(
+    val itemName: String,
+    val finalPrice: Double,
+    val customerType: String
+)
 
-        // VIOLATION Kaku jika ada tipe customer/diskon baru di masa depan (OCP)
+
+// =======================
+// REPOSITORY (DIP)
+// =======================
+interface OrderRepository {
+    fun saveOrder(order: Order)
+}
+
+
+// =======================
+// IMPLEMENTASI CSV REPOSITORY
+// =======================
+class CsvOrderRepository(
+    private val fileName: String = "Orders.csv"
+) : OrderRepository {
+
+    override fun saveOrder(order: Order) {
+
+        File(fileName).appendText(
+            "${order.itemName},${order.finalPrice},${order.customerType}\n"
+        )
+
+        // Safe Resource Handling menggunakan use
+        File(fileName).bufferedWriter().use { writer ->
+            writer.append(
+                "${order.itemName},${order.finalPrice},${order.customerType}\n"
+            )
+        }
+    }
+}
+
+
+// =======================
+// NOTIFICATION SERVICE (DIP)
+// =======================
+interface NotificationService {
+    fun sendNotification(message: String)
+}
+
+
+// =======================
+// IMPLEMENTASI EMAIL NOTIFIER
+// =======================
+class EmailNotifier : NotificationService {
+
+    override fun sendNotification(message: String) {
+        println("Email terkirim: $message")
+    }
+}
+
+
+// =======================
+// SAFE ORDER PROCESSOR
+// =======================
+class SafeOrderProcessor(
+    private val repo: OrderRepository,
+    private val notifier: NotificationService
+) {
+
+    fun processOrder(
+        itemName: String,
+        basePrice: Double,
+        customerType: String
+    ) {
+
+        // Masih sederhana dulu
         val finalPrice = when (customerType) {
             "REGULAR" -> basePrice
-            "VIP" -> basePrice * 0.90 // Diskon 10%
+            "VIP" -> basePrice * 0.90
             else -> basePrice
         }
 
         println("Memproses pesanan $itemName seharga $finalPrice")
 
-        //VIOLATION SRP/DIP: Menulis file langsung di class bisnis
-        file .appendText("$itemName,$finalPrice,$customerType\n")
+        // Simpan order
+        val order = Order(
+            itemName = itemName,
+            finalPrice = finalPrice,
+            customerType = customerType
+        )
 
-        //VIOLATION SRP/DIP: Notifikasi terikat kuat dengan sistem order
-        println("Email terkirim: Pesanan $itemName Anda telah dikonfirmasi")
+        repo.saveOrder(order)
+
+        // Kirim notifikasi
+        notifier.sendNotification(
+            "Pesanan $itemName Anda telah dikonfirmasi"
+        )
     }
+}
+
+
+// =======================
+// MAIN
+// =======================
+fun main() {
+
+    val repository = CsvOrderRepository()
+    val notifier = EmailNotifier()
+
+    val processor = SafeOrderProcessor(
+        repo = repository,
+        notifier = notifier
+    )
+
+    processor.processOrder(
+        itemName = "Laptop Gaming",
+        basePrice = 15000000.0,
+        customerType = "VIP"
+    )
 }
