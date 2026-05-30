@@ -1,10 +1,11 @@
 package oop_75794_Week2_LeonardusAdilla
 
 class Student(
-    val name: String,
-    val nim: String,
-    var gpa: Double = 0.0,
-    var major: String
+     val name: String,
+     val nim: String,
+     var major: String,
+     var gpa: Double = 0.0
+
 ) {
 
     init {
