@@ -10,4 +10,17 @@ class Employee(val name: String) {
                 field = value
             }
         }
+    // Hanya bisa diakses di file/ class ini saja
+    private var performanceRating: Int = 3
+
+    fun incereasePerformance() {
+        performanceRating++
+        println("Kinerja $name meningkat! Rating: $performanceRating")
+    }
+
+    // Kita tidak buat getter untuk performanceRating, jadi data ini benar_benar rahasia
+    // kecuali kita buat function khusus untuk print.
+    fun printStatus() {
+        println("Karyawan: $name, Rating: $performanceRating")
+    }
 }
