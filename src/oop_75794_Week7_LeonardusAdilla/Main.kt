@@ -57,4 +57,29 @@ fun main() {
     println("Rarity     : ${starterWeapon.item.rarity}")
     println("Durability : ${starterWeapon.durability}")
 
+    println("\n=== TEST IMMUTABILITY & BATTLE EVENTS ===")
+
+    // Upgrade senjata menggunakan copy()
+    val upgradedItem = starterWeapon.item.copy(
+        damage = 25
+    )
+
+    println("Senjata Setelah Upgrade:")
+    println(upgradedItem)
+
+    // Simulasi event berurutan
+    processEvent(BattleState.SafeZone)
+
+    processEvent(
+        BattleState.MonsterEncounter("Goblin Nakal")
+    )
+
+    processEvent(
+        BattleState.LootDropped(upgradedItem)
+    )
+
+    processEvent(
+        BattleState.GameOver("Terkena jebakan racun")
+    )
+
 }
