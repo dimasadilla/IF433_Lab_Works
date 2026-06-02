@@ -1,6 +1,7 @@
 package oop_75794_Week3_LeonardusAdilla
 
 fun main() {
+    // ===== Test Weapon =====
     val w = Weapon("Dragon Slayer", 500)
 
     // 1. Test Damage Negatif
@@ -13,4 +14,17 @@ fun main() {
 
     // 3. Test Computed Property
     println("Tier Senjata: ${w.tier}")
+
+    println("\n===== Test Player =====")
+
+    val player = Player("Leon")
+
+    // println(player.xp)
+    // ERROR: Cannot access 'xp': it is private in 'Player'
+
+    player.addXp(50)
+    println("Level saat ini: ${player.level}")
+
+    player.addXp(60)
+    println("Level saat ini: ${player.level}")
 }
