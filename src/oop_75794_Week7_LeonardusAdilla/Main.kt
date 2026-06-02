@@ -41,4 +41,8 @@ fun main() {
 
     println(uiMessage)
 
+    println("\n=== TEST GAME MANAGER (SINGLETON) ===")
+    GameManager.startGame()
+    GameManager.startGame()
+
 }
